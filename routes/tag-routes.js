@@ -10,28 +10,28 @@ router.get('/tags', async function (req, res) {
   res.json(tags)
 })
 
-router.get('/tags/:id', async function ({ params: { id } }, res) {
+router.get('/tags/:id', async function (req, res) {
   // find a single tag by its `id`
   // be sure to include its associated Product data
-  const tags = await Tag.findOne({ include: [Product] })
+  const tags = await Tag.findOne({ where: { id: req.params.id }, include: [Product] })
   res.json(tags)
 })
 
 router.post('/tags', async function (req, res) {
   // create a new tag
-  const tag = await Tag.create(req.body)
+  const tags = await Tag.create(req.body)
   res.sendStatus(200)
 })
 
-router.put('/tags/:id', async function ({ params: { id } }, res) {
+router.put('/tags/:id', async function (req, res) {
   // update a tag's name by its `id` value
-  const tags = await Tag.update(req.body, { where: { id } })
-  res.sendStatus(200)
+  const tags = await Tag.update(req.body, { where: { id: req.params.id } })
+  res.status(200).json(tags)
 })
 
-router.delete('/tags/:id', async function ({ params: { id } }, res) {
+router.delete('/tags/:id', async function (req, res) {
   // delete on tag by its `id` value
-  const tags = await Tag.destroy({ where: { id } })
+  const tags = await Tag.destroy({ where: { id: req.params.id } })
   res.sendStatus(200)
 })
 
